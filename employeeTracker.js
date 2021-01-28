@@ -37,4 +37,38 @@ function runSearch() {
             "View department total salary"
         ]
     })
-}
+    .then(function (answer) {
+        switch(answer.action) {
+            case "View All Employees":
+                viewAll();
+                break;
+            case "View All Employees By Department":
+                viewAllEmployeesByDepartment();
+                break;
+            case "View All Employees By Manager":
+                viewAllEmployeesByManager();
+                break;
+            case "Add Employee":
+                addEmployee();
+                break;
+            case "Remove Employee":
+                removeEmployee();
+                break;
+            case "Update Employee Role":
+                updateRole();
+                break;
+            case "Update Employee Manager":
+                updateManager();
+                break;
+            case "Add role":
+                addRole();
+                break;
+            case "Remover role":
+                removeRole();
+                break;
+            case "View department total salary":
+                departmentSalary();
+                break;
+        }
+    })
+};
