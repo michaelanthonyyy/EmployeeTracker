@@ -39,7 +39,7 @@ function runSearch() {
                 "Are you finished?"
             ]
         })
-        .then(function (answer) {
+        .then((answer) => {
             switch (answer.action) {
                 case "View All Employees":
                     viewAll();
@@ -119,57 +119,86 @@ function viewAllEmployeesByDepartment() {
 // View Employees by Manager
 function viewAllEmployeesByManager() {
     inquirer
-    .prompt({
-        type: "list",
-        name: "manager",
-        message: "Which manager's employees would you like to see?",
-        choices: [
-            "Sales Lead",
-            "Lead Engineer",
-            "Account Manager",
-            "Legal Team Lead"
-        ]
-    })
-    .then((answer) => {
-        var query = "SELECT employee.id, employee.first_name, employee.last_name, role.title, employee.manager_id FROM employee INNER JOIN role On employee.manager_id = role.id WHERE role.title = ?"
-        connection.query(query, [answer.manager], 
-            function (err, res) {
-            if (err) throw err;
-            console.table(res);
-            runSearch();
+        .prompt({
+            type: "list",
+            name: "manager",
+            message: "Which manager's employees would you like to see?",
+            choices: [
+                "Sales Lead",
+                "Lead Engineer",
+                "Account Manager",
+                "Legal Team Lead"
+            ]
         })
-    })
+        .then((answer) => {
+            var query = "SELECT employee.id, employee.first_name, employee.last_name, role.title, employee.manager_id FROM employee INNER JOIN role On employee.manager_id = role.id WHERE role.title = ?"
+            connection.query(query, [answer.manager],
+                function (err, res) {
+                    if (err) throw err;
+                    console.table(res);
+                    runSearch();
+                })
+        })
 }
 
 
 // Add Employee
-function addEmployee(){
+function addEmployee() {
     inquirer
-    .prompt({
-        type: "prompt",
-        name: "firstName",
-        message: "What is the employees first name?",
-    },
-    {
-        type: "prompt",
-        name: "lastName",
-        message: "What is the employees last name?",
-    },
-    {
-       type: "prompt",
-       name: "roleID",
-       message: "What is the employees role id?",
-    },
-    {
-        type: "prompt",
-        name: "managerID",
-        message: "What is the employees manager id"
-    })
-    .then
-    
+        .prompt([
+            {
+                type: "prompt",
+                name: "id",
+                message: "Please input new employees ID (New ID's start at 20)",
+            },
+            {
+                type: "prompt",
+                name: "firstName",
+                message: "What is the employees first name?",
+            },
+            {
+                type: "prompt",
+                name: "lastName",
+                message: "What is the employees last name?",
+            },
+            {
+                type: "list",
+                name: "roleID",
+                message: "What is the employees role id? (1-Sales Lead, 2-Lead Engineer, 3-Account Manager, 4-Legal Team Lead, 11- Salesperson, 12-Software Engineer, 13-Accountant, 14-Lawyer",
+                choices: [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "11",
+                    "12",
+                    "13",
+                    "14"
+                ]
+            },
+            {
+                type: "prompt",
+                name: "managerID",
+                message: "What is the employees manager id? (1-4)cle"
+            }])
+        .then((answer) => {
+            var query = "INSERT INTO employee SET ?";
+            connection.query(query,
+                {
+                    id: parseInt(answer.id),
+                    first_name: answer.firstName,
+                    last_name: answer.lastName,
+                    role_id: answer.roleID,
+                    manager_id: answer.managerID
+                },
+                function (err, res) {
+                    if (err) throw err
+                    console.table(query.sql);
+                    runSearch();
+                })
+        })
 };
-// employees manager (LIST)
-// runSearch()
+
 
 // removeEmployee();
 ///////////////////////////////////////
