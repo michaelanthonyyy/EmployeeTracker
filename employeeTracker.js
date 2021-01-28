@@ -12,3 +12,8 @@ var connection = mysql.createConnection ({
     
     database: "employee_listDB"
 });
+
+connection.connect(function (err) {
+    if (err) throw err;
+    runSearch();
+});
