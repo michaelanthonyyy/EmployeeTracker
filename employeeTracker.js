@@ -72,7 +72,6 @@ function runSearch() {
                 departmentSalary();
                 break;
             case "I'm Done":
-                console.log("Thanks for using!")
                 connection.end();
                 break;
         }
@@ -90,13 +89,32 @@ function viewAll(){
     })
 };
 
-
 // View Employees by Department
-// viewAllEmployeesByDepartment();
-///////////////////////////////////////
-// department (LIST)
-// PRINT employee list from list (console.table)
-// runSearch()
+function viewAllEmployeesByDepartment(){
+    inquirer 
+    .prompt({
+        type: "list",
+        name: "department",
+        message: "Which department would you like to see?",
+        choices: [
+            "Sales",
+            "Engineering",
+            "Finance",
+            "Legal"
+        ]
+    })
+    .then((answer) => {
+        var query = "SELECT employee.id, employee.first_name, employee.last_name, employee.role_id, employee.manager_id FROM ((employee INNER JOIN role On employee.role_id = role.id) INNER JOIN department ON department.id = role.department_id) WHERE department.name = ?";
+        connection.query(query, [answer.department],
+            function(err, res) {
+                if(err) throw err;
+                console.table(res);
+                runSearch();
+            })
+    }) 
+   
+};
+
 
 // viewAllEmployeesByManager();
 ///////////////////////////////////////
