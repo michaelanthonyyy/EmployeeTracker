@@ -35,7 +35,8 @@ function runSearch() {
             "Update Employee Manager",
             "Add role",
             "Remove role",
-            "View department total salary"
+            "View department total salary",
+            "Are you finished?"
         ]
     })
     .then(function (answer) {
@@ -64,12 +65,94 @@ function runSearch() {
             case "Add role":
                 addRole();
                 break;
-            case "Remover role":
+            case "Remove role":
                 removeRole();
                 break;
             case "View department total salary":
                 departmentSalary();
                 break;
+            case "Are you finished?":
+                connection.end();
+                break;
         }
     })
 };
+
+
+viewAll();
+///////////////////////////////////////
+// View All Employees
+
+// PRINT employee list (console.table)
+// runSearch()
+
+
+viewAllEmployeesByDepartment();
+///////////////////////////////////////
+// View Employees by Department
+// department (LIST)
+// PRINT employee list from list (console.table)
+// runSearch()
+
+viewAllEmployeesByManager();
+///////////////////////////////////////
+// View Employees by Manager
+// manager (LIST)
+// PRINT employee list from selection (console.table)
+// runSearch()
+
+addEmployee();
+///////////////////////////////////////
+// Add Employee
+// first name (prompt)
+// last name (prompt)
+// role (LIST)
+// employees manager (LIST)
+// runSearch()
+
+removeEmployee();
+///////////////////////////////////////
+// Remove Employee
+// Search by department? (LIST)
+// Full List of Employees? (LIST)
+// search by role? (LIST)
+// employees manager?(LIST)
+// runSearch()
+
+updateRole();
+///////////////////////////////////////
+// Update Role
+// print list of employees? (LIST)
+// by current role? (list)
+// what is the new role (list)
+// runSearch()
+
+updateManager();
+///////////////////////////////////////
+// Update Manager
+// employee list? (list)
+// manager list? (list)
+// change to new manager?
+// runSearch()
+
+addRole();
+///////////////////////////////////////
+// Add Role
+// what is role  (prompt)
+// what is salary (prompt)
+// department id (list)
+// runSearch()
+
+removeRole();
+///////////////////////////////////////
+// Remove Role
+// which role (list)
+// runSearch()
+
+departmentSalary();
+///////////////////////////////////////
+// view department total salary
+// chooose department (list)
+// sumOF salary?
+// console.table results
+// runSearch()
