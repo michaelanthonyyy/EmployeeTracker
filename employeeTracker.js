@@ -96,7 +96,7 @@ function viewAllEmployeesByDepartment() {
         .prompt({
             type: "list",
             name: "department",
-            message: "Which department would you like to see?",
+            message: "Which departments employees would you like to see?",
             choices: [
                 "Sales",
                 "Engineering",
@@ -116,19 +116,58 @@ function viewAllEmployeesByDepartment() {
 };
 
 
-// viewAllEmployeesByManager();
-///////////////////////////////////////
 // View Employees by Manager
-// manager (LIST)
-// PRINT employee list from selection (console.table)
-// runSearch()
+function viewAllEmployeesByManager() {
+    inquirer
+    .prompt({
+        type: "list",
+        name: "manager",
+        message: "Which manager's employees would you like to see?",
+        choices: [
+            "Sales Lead",
+            "Lead Engineer",
+            "Account Manager",
+            "Legal Team Lead"
+        ]
+    })
+    .then((answer) => {
+        var query = "SELECT employee.id, employee.first_name, employee.last_name, role.title, employee.manager_id FROM employee INNER JOIN role On employee.manager_id = role.id WHERE role.title = ?"
+        connection.query(query, [answer.manager], 
+            function (err, res) {
+            if (err) throw err;
+            console.table(res);
+            runSearch();
+        })
+    })
+}
 
-// addEmployee();
-///////////////////////////////////////
+
 // Add Employee
-// first name (prompt)
-// last name (prompt)
-// role (LIST)
+function addEmployee(){
+    inquirer
+    .prompt({
+        type: "prompt",
+        name: "firstName",
+        message: "What is the employees first name?",
+    },
+    {
+        type: "prompt",
+        name: "lastName",
+        message: "What is the employees last name?",
+    },
+    {
+       type: "prompt",
+       name: "roleID",
+       message: "What is the employees role id?",
+    },
+    {
+        type: "prompt",
+        name: "managerID",
+        message: "What is the employees manager id"
+    })
+    .then
+    
+};
 // employees manager (LIST)
 // runSearch()
 
@@ -153,6 +192,7 @@ function viewAllEmployeesByDepartment() {
 ///////////////////////////////////////
 // Update Manager
 // employee list? (list)
+// var query = "SELECT employee.id, employee.first_name, employee.last_name, role.title, employee.manager_id FROM employee INNER JOIN role On employee.role_id = role.id WHERE role.title = ?"
 // manager list? (list)
 // change to new manager?
 // runSearch()
