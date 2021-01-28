@@ -71,7 +71,8 @@ function runSearch() {
             case "View department total salary":
                 departmentSalary();
                 break;
-            case "Are you finished?":
+            case "I'm Done":
+                console.log("Thanks for using!")
                 connection.end();
                 break;
         }
@@ -79,29 +80,32 @@ function runSearch() {
 };
 
 
-viewAll();
-///////////////////////////////////////
+
 // View All Employees
+function viewAll(){
+    connection.query("SELECT * FROM employee", function(err, res) {
+        if(err) throw err;
+        console.table(res);
+        runSearch();
+    })
+};
 
-// PRINT employee list (console.table)
-// runSearch()
 
-
-viewAllEmployeesByDepartment();
-///////////////////////////////////////
 // View Employees by Department
+// viewAllEmployeesByDepartment();
+///////////////////////////////////////
 // department (LIST)
 // PRINT employee list from list (console.table)
 // runSearch()
 
-viewAllEmployeesByManager();
+// viewAllEmployeesByManager();
 ///////////////////////////////////////
 // View Employees by Manager
 // manager (LIST)
 // PRINT employee list from selection (console.table)
 // runSearch()
 
-addEmployee();
+// addEmployee();
 ///////////////////////////////////////
 // Add Employee
 // first name (prompt)
@@ -110,7 +114,7 @@ addEmployee();
 // employees manager (LIST)
 // runSearch()
 
-removeEmployee();
+// removeEmployee();
 ///////////////////////////////////////
 // Remove Employee
 // Search by department? (LIST)
@@ -119,7 +123,7 @@ removeEmployee();
 // employees manager?(LIST)
 // runSearch()
 
-updateRole();
+// updateRole();
 ///////////////////////////////////////
 // Update Role
 // print list of employees? (LIST)
@@ -127,7 +131,7 @@ updateRole();
 // what is the new role (list)
 // runSearch()
 
-updateManager();
+// updateManager();
 ///////////////////////////////////////
 // Update Manager
 // employee list? (list)
@@ -135,7 +139,7 @@ updateManager();
 // change to new manager?
 // runSearch()
 
-addRole();
+// addRole();
 ///////////////////////////////////////
 // Add Role
 // what is role  (prompt)
@@ -143,13 +147,13 @@ addRole();
 // department id (list)
 // runSearch()
 
-removeRole();
+// removeRole();
 ///////////////////////////////////////
 // Remove Role
 // which role (list)
 // runSearch()
 
-departmentSalary();
+// departmentSalary();
 ///////////////////////////////////////
 // view department total salary
 // chooose department (list)
