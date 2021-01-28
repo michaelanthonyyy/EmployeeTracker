@@ -10,15 +10,15 @@ CREATE TABLE department (
 
 CREATE TABLE role (
     id INT PRIMARY KEY,
-    title VARCHAR(30),
-    salary DECIMAL(10,4),
-    -- department_id INT referencing department role belongs to
+    title VARCHAR(30) NOT NULL,
+    salary DECIMAL(10,4) NOT NULL,
+    department_id INT
 );
 
 CREATE TABLE employee (
     id INT PRIMARY KEY,
     first_name VARCHAR(30),
     last_name VARCHAR(30),
-    -- role_id INT reference to role employee has
-    -- manager_id INT refer3ence to another employee that manages the employee being created. if no manager = null
-)
+    role_id INT,
+    manager_id INT
+);
