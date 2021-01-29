@@ -33,6 +33,8 @@ function runSearch() {
                 "Remove Employee",
                 "Update Employee Role",
                 "Update Employee Manager",
+                "Add department",
+                "Remove Department",
                 "Add role",
                 "Remove role",
                 "View department total salary",
@@ -297,7 +299,7 @@ function addDepartment() {
 
 
 // Remove Department
-function removeDepartment(){
+function removeDepartment() {
     connection.query("SELECT * FROM department", function (err, res) {
         if (err) throw err;
         console.table(res);
