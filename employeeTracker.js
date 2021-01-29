@@ -193,16 +193,16 @@ function addEmployee() {
                 },
                 function (err, res) {
                     if (err) throw err
-                    console.table(query.sql);
+                    console.table(res);
                     runSearch();
                 })
         })
 };
 
 
-// removeEmployee();
-///////////////////////////////////////
 // Remove Employee
+// removeEmployee();
+
 // Search by department? (LIST)
 // Full List of Employees? (LIST)
 // search by role? (LIST)
@@ -226,9 +226,49 @@ function addEmployee() {
 // change to new manager?
 // runSearch()
 
-// addRole();
-///////////////////////////////////////
+
 // Add Role
+function addRole(){
+    inquirer
+    .prompt([
+        {
+            type: "input",
+            name: "id",
+            message: "Please input a new Role ID (New ID's start at 20)",
+        },
+        {
+            type: "input",
+            name: "roleName",
+            message: "What role would you like to add?"
+        },
+        {
+            type: "input",
+            name: "salary",
+            message: "What is the salary for this position?"
+        },
+        {
+            type: "input",
+            name: "department",
+            message: "Which department is this role for? Please enter Department ID (1- Sales, 2- Engineering, 3- Finance, 4-Legal"
+        }
+    ]).then((answer) => {
+        var query = "INSERT INTO role SET ?";
+        connection.query(query, 
+            {
+                id: parseInt(answer.id),
+                title: answer.roleName,
+                salary: answer.salary,
+                department_id: answer.department
+            },
+            function(err, res) {
+                if(err) throw err;
+                console.table(res);
+                runSearch();
+            }
+        )
+    })
+};
+
 // what is role  (prompt)
 // what is salary (prompt)
 // department id (list)
