@@ -237,51 +237,37 @@ function removeEmployee() {
 };
 
 // Update Employee Role
-function updateRole(){
-    connection.query("SELECT * FROM employee", function (err, res) {
-        if (err) throw err;
-        console.table(res);
-    });
-    connection.query("SELECT * FROM role", function (err, res) {
-        if (err) throw err;
-        console.table(res);
-    });
+function updateRole() {
+    connection.query("SELECT employee.id, employee.first_name, employee.last_name, employee.role_id, role.title, role.id FROM employee INNER JOIN role On employee.role_id = role.id",
+        function (err, res) {
+            if (err) throw err;
+            console.table(res);
+        });
     inquirer
-    .prompt([
-        {
-            type: "input",
-            name: "employee_id",
-            message: "Enter the Employee ID whose role you'd like to change"
-        },
-        {
-            type: "input",
-            name: "roleID",
-            message: "Which role would you like to change this employee to?"
-        }
-    ]).then((answer => {
-        var query = "UPDATE employee SET ? WHERE employee?";
-        connection.query(query,
+        .prompt([
             {
-                role_id: answer.roleID
+                type: "input",
+                name: "roleID",
+                message: "Which role would you like to change this employee to?"
             },
-            {   
-                id: answer.employee_id
-            },
-            function (err, res) {
-                if (err) throw err;
-                console.log("Role successfully deleted!");
-                runSearch();
+            {
+                type: "input",
+                name: "employee_id",
+                message: "Enter the Employee ID whose role you'd like to change"
             }
-        )
-    }))
+        ]).then((answer => {
+            var query = `UPDATE employee SET employee.role_id = ? WHERE employee.id = ?`;
+            connection.query(query,
+            [answer.roleID, answer.employee_id],
+                function (err, res) {
+                    if (err) throw err;
+                    console.log("Employees role successfully updated!");
+                    runSearch();
+                }
+            )
+        }
+        ))
 };
-
-
-// print list of employees? (LIST)
-// by current role? (list)
-// what is the new role (list)
-// runSearch()
-
 
 
 // updateManager();
@@ -339,7 +325,6 @@ function removeDepartment() {
                 name: "departmentName",
                 message: "Which department would you like to remove?"
             }
-
         ]).then((answer => {
             var query = "DELETE FROM department WHERE ?";
             connection.query(query,
