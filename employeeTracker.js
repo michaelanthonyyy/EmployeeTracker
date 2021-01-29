@@ -38,7 +38,7 @@ function runSearch() {
                 "Add role",
                 "Remove role",
                 "View department total salary",
-                "Are you finished?"
+                "I'm Done"
             ]
         })
         .then((answer) => {
@@ -258,7 +258,7 @@ function updateRole() {
         ]).then((answer => {
             var query = `UPDATE employee SET employee.role_id = ? WHERE employee.id = ?`;
             connection.query(query,
-            [answer.roleID, answer.employee_id],
+                [answer.roleID, answer.employee_id],
                 function (err, res) {
                     if (err) throw err;
                     console.log("Employees role successfully updated!");
@@ -292,7 +292,7 @@ function updateManager() {
         ]).then((answer => {
             var query = `UPDATE employee SET employee.manager_id = ? WHERE employee.id = ?`;
             connection.query(query,
-            [answer.manager_id, answer.employee_id],
+                [answer.manager_id, answer.employee_id],
                 function (err, res) {
                     if (err) throw err;
                     console.log("Employees manager successfully updated!");
@@ -302,7 +302,6 @@ function updateManager() {
         }
         ))
 };
-// var query = "SELECT employee.id, employee.first_name, employee.last_name, role.title, employee.manager_id FROM employee INNER JOIN role On employee.role_id = role.id WHERE role.title = ?"
 
 
 
@@ -448,7 +447,13 @@ function removeRole() {
 // console.table results
 // runSearch()
 
-
+// I'm Done prompt so user can exit the application with a fresh print of the employee roster
 function letsFinish() {
+    connection.query("SELECT * FROM employee", function (err, res) {
+        if (err) throw err;
+        console.table(res);
+        console.log("Let's finish up then..");
+        connection.end();
+    })
     
 }
