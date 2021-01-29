@@ -80,7 +80,7 @@ function runSearch() {
                     departmentSalary();
                     break;
                 case "I'm Done":
-                    connection.end();
+                    letsFinish();
                     break;
             }
         })
@@ -270,14 +270,40 @@ function updateRole() {
 };
 
 
-// updateManager();
-///////////////////////////////////////
 // Update Manager
-// employee list? (list)
+function updateManager() {
+    connection.query("SELECT * FROM employee",
+        function (err, res) {
+            if (err) throw err;
+            console.table(res);
+        });
+    inquirer
+        .prompt([
+            {
+                type: "input",
+                name: "manager_id",
+                message: "Which manager would you like to change this employee to?"
+            },
+            {
+                type: "input",
+                name: "employee_id",
+                message: "Enter the Employee ID whose manager you'd like to change"
+            }
+        ]).then((answer => {
+            var query = `UPDATE employee SET employee.manager_id = ? WHERE employee.id = ?`;
+            connection.query(query,
+            [answer.manager_id, answer.employee_id],
+                function (err, res) {
+                    if (err) throw err;
+                    console.log("Employees manager successfully updated!");
+                    runSearch();
+                }
+            )
+        }
+        ))
+};
 // var query = "SELECT employee.id, employee.first_name, employee.last_name, role.title, employee.manager_id FROM employee INNER JOIN role On employee.role_id = role.id WHERE role.title = ?"
-// manager list? (list)
-// change to new manager?
-// runSearch()
+
 
 
 // Add Department
@@ -421,3 +447,8 @@ function removeRole() {
 // sumOF salary?
 // console.table results
 // runSearch()
+
+
+function letsFinish() {
+    
+}
