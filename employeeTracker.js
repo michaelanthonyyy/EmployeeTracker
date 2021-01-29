@@ -195,7 +195,7 @@ function addEmployee() {
                     manager_id: answer.managerID
                 },
                 function (err, res) {
-                    if (err) throw err
+                    if (err) throw err;
                     console.table(res);
                     runSearch();
                 })
@@ -204,8 +204,43 @@ function addEmployee() {
 
 
 // Remove Employee
-///////////////////////////////////////
-// removeEmployee();
+function removeEmployee() {
+    connection.query("SELECT * from employee", function (err, res) {
+        if (err) throw err;
+        res.forEach((employee => {
+            console.log(employee.first_name, employee.last_name);
+        }))
+    })
+    inquirer
+        .prompt([
+            {
+                type: "prompt",
+                name: "first",
+                message: "What is the first name of the employee you'd like to remove?",
+            },
+            {
+                type: "prompt",
+                name: "last",
+                message: "What is the last name of the employee you'd like to remove?"
+            }
+        ])
+        .then((answer => {
+            var query = "DELETE FROM employee WHERE ?";
+            connection.query(query,
+                {
+                    first_name: answer.first,
+                    last_name: answer.last
+                },
+                function (err, res) {
+                    if (err) throw err;
+                    console.log("Employee successfully deleted!");
+                    runSearch();
+                }
+
+            )
+        }))
+};
+
 // Search by department? (LIST)
 // Full List of Employees? (LIST)
 // search by role? (LIST)
@@ -231,77 +266,77 @@ function addEmployee() {
 
 
 // Add Department
-function addDepartment(){
+function addDepartment() {
     inquirer
-    .prompt([
-        {
-            type: "input",
-            name: "id",
-            message: "Please input a new Department ID (New ID's start at 10)",
-        },
-        {
-            type: "input",
-            name: "departmentName",
-            message: "What department would you like to add?"
-        },
-
-    ]).then((answer) => {
-        var query = "INSERT INTO department SET ?";
-        connection.query(query, 
+        .prompt([
             {
-                id: parseInt(answer.id),
-                name: answer.departmentName,
+                type: "input",
+                name: "id",
+                message: "Please input a new Department ID (New ID's start at 10)",
             },
-            function(err, res) {
-                if(err) throw err;
-                console.table(res);
-                runSearch();
-            }
-        )
-    })
+            {
+                type: "input",
+                name: "departmentName",
+                message: "What department would you like to add?"
+            },
+
+        ]).then((answer) => {
+            var query = "INSERT INTO department SET ?";
+            connection.query(query,
+                {
+                    id: parseInt(answer.id),
+                    name: answer.departmentName,
+                },
+                function (err, res) {
+                    if (err) throw err;
+                    console.table(res);
+                    runSearch();
+                }
+            )
+        })
 };
 
 
 // Add Role
-function addRole(){
+function addRole() {
     inquirer
-    .prompt([
-        {
-            type: "input",
-            name: "id",
-            message: "Please input a new Role ID (New ID's start at 20)",
-        },
-        {
-            type: "input",
-            name: "roleName",
-            message: "What role would you like to add?"
-        },
-        {
-            type: "input",
-            name: "salary",
-            message: "What is the salary for this position?"
-        },
-        {
-            type: "input",
-            name: "department",
-            message: "Which department is this role for? Please enter Department ID (1- Sales, 2- Engineering, 3- Finance, 4-Legal"
-        }
-    ]).then((answer) => {
-        var query = "INSERT INTO role SET ?";
-        connection.query(query, 
+        .prompt([
             {
-                id: parseInt(answer.id),
-                title: answer.roleName,
-                salary: answer.salary,
-                department_id: answer.department
+                type: "input",
+                name: "id",
+                message: "Please input a new Role ID (New ID's start at 20)",
             },
-            function(err, res) {
-                if(err) throw err;
-                console.table(res);
-                runSearch();
+            {
+                type: "input",
+                name: "roleName",
+                message: "What role would you like to add?"
+            },
+            {
+                type: "input",
+                name: "salary",
+                message: "What is the salary for this position?"
+            },
+            {
+                type: "input",
+                name: "department",
+                message: "Which department is this role for? Please enter Department ID (1- Sales, 2- Engineering, 3- Finance, 4-Legal"
             }
-        )
-    })
+        ]).then((answer) => {
+            var query = "INSERT INTO role SET ?";
+            connection.query(query,
+                {
+                    id: parseInt(answer.id),
+                    title: answer.roleName,
+                    salary: answer.salary,
+                    department_id: answer.department
+                },
+                function (err, res) {
+                    if (err) throw err;
+                    console.table(res);
+                    runSearch();
+                }
+            )
+        })
 };
 
 // removeRole();
