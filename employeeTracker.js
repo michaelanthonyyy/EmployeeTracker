@@ -186,7 +186,7 @@ function addEmployee() {
             {
                 type: "prompt",
                 name: "managerID",
-                message: "What is the employees manager id? (1-4)cle"
+                message: "What is the employees manager id? (1-4) "
             }])
         .then((answer) => {
             var query = "INSERT INTO employee SET ?";
@@ -200,7 +200,7 @@ function addEmployee() {
                 },
                 function (err, res) {
                     if (err) throw err;
-                    console.table(res);
+                    console.log("Employee successfully added!");
                     runSearch();
                 })
         })
@@ -209,46 +209,74 @@ function addEmployee() {
 
 // Remove Employee
 function removeEmployee() {
-    connection.query("SELECT * from employee", function (err, res) {
+    connection.query("SELECT * FROM employee", function (err, res) {
         if (err) throw err;
-        res.forEach((employee => {
-            console.log(employee.first_name, employee.last_name);
-        }))
-    })
+        console.table(res);
+    });
     inquirer
         .prompt([
             {
                 type: "prompt",
-                name: "first",
-                message: "What is the first name of the employee you'd like to remove?",
-            },
-            {
-                type: "prompt",
-                name: "last",
-                message: "What is the last name of the employee you'd like to remove?"
+                name: "id",
+                message: "What is the ID of the employee you'd like to remove?"
             }
         ])
         .then((answer => {
             var query = "DELETE FROM employee WHERE ?";
             connection.query(query,
                 {
-                    first_name: answer.first,
-                    last_name: answer.last
+                    id: answer.id,
                 },
                 function (err, res) {
                     if (err) throw err;
                     console.log("Employee successfully deleted!");
                     runSearch();
                 }
-
             )
         }))
 };
 
+// Update Employee Role
+function updateRole(){
+    connection.query("SELECT * FROM employee", function (err, res) {
+        if (err) throw err;
+        console.table(res);
+    });
+    connection.query("SELECT * FROM role", function (err, res) {
+        if (err) throw err;
+        console.table(res);
+    });
+    inquirer
+    .prompt([
+        {
+            type: "input",
+            name: "employee_id",
+            message: "Enter the Employee ID whose role you'd like to change"
+        },
+        {
+            type: "input",
+            name: "roleID",
+            message: "Which role would you like to change this employee to?"
+        }
+    ]).then((answer => {
+        var query = "UPDATE employee SET ? WHERE employee?";
+        connection.query(query,
+            {
+                role_id: answer.roleID
+            },
+            {   
+                id: answer.employee_id
+            },
+            function (err, res) {
+                if (err) throw err;
+                console.log("Role successfully deleted!");
+                runSearch();
+            }
+        )
+    }))
+};
 
-// updateRole();
-///////////////////////////////////////
-// Update Role
+
 // print list of employees? (LIST)
 // by current role? (list)
 // what is the new role (list)
