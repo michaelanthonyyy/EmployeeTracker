@@ -65,6 +65,9 @@ function runSearch() {
                 case "Add department":
                     addDepartment();
                     break;
+                case "Remove department":
+                    removeDepartment();
+                    break;
                 case "Add role":
                     addRole();
                     break;
@@ -80,7 +83,6 @@ function runSearch() {
             }
         })
 };
-
 
 
 // View All Employees
@@ -291,6 +293,36 @@ function addDepartment() {
                 }
             )
         })
+};
+
+
+// Remove Department
+function removeDepartment(){
+    connection.query("SELECT * FROM department", function (err, res) {
+        if (err) throw err;
+        console.table(res);
+    });
+    inquirer
+        .prompt([
+            {
+                type: "input",
+                name: "departmentName",
+                message: "Which department would you like to remove?"
+            }
+
+        ]).then((answer => {
+            var query = "DELETE FROM department WHERE ?";
+            connection.query(query,
+                {
+                    name: answer.departmentName,
+                },
+                function (err, res) {
+                    if (err) throw err;
+                    console.log("Department successfully deleted!");
+                    runSearch();
+                }
+            )
+        }))
 };
 
 
