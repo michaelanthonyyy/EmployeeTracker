@@ -241,11 +241,6 @@ function removeEmployee() {
         }))
 };
 
-// Search by department? (LIST)
-// Full List of Employees? (LIST)
-// search by role? (LIST)
-// employees manager?(LIST)
-// runSearch()
 
 // updateRole();
 ///////////////////////////////////////
@@ -254,6 +249,8 @@ function removeEmployee() {
 // by current role? (list)
 // what is the new role (list)
 // runSearch()
+
+
 
 // updateManager();
 ///////////////////////////////////////
@@ -332,18 +329,43 @@ function addRole() {
                 },
                 function (err, res) {
                     if (err) throw err;
-                    console.table(res);
+                    console.log("Role Successfully Created!");
                     runSearch();
                 }
             )
         })
 };
 
-// removeRole();
-///////////////////////////////////////
 // Remove Role
-// which role (list)
-// runSearch()
+function removeRole() {
+    connection.query("SELECT * FROM role", function (err, res) {
+        if (err) throw err;
+        console.table(res);
+    });
+    inquirer
+        .prompt([
+            {
+                type: "input",
+                name: "roleName",
+                message: "What role would you like to remove?"
+            }
+
+        ]).then((answer => {
+            var query = "DELETE FROM role WHERE ?";
+            connection.query(query,
+                {
+                    title: answer.roleName,
+                },
+                function (err, res) {
+                    if (err) throw err;
+                    console.log("Role successfully deleted!");
+                    runSearch();
+                }
+            )
+        }))
+};
+
+
 
 // departmentSalary();
 ///////////////////////////////////////
