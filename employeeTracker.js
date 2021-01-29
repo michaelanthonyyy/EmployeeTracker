@@ -62,6 +62,9 @@ function runSearch() {
                 case "Update Employee Manager":
                     updateManager();
                     break;
+                case "Add department":
+                    addDepartment();
+                    break;
                 case "Add role":
                     addRole();
                     break;
@@ -201,8 +204,8 @@ function addEmployee() {
 
 
 // Remove Employee
+///////////////////////////////////////
 // removeEmployee();
-
 // Search by department? (LIST)
 // Full List of Employees? (LIST)
 // search by role? (LIST)
@@ -225,6 +228,38 @@ function addEmployee() {
 // manager list? (list)
 // change to new manager?
 // runSearch()
+
+
+// Add Department
+function addDepartment(){
+    inquirer
+    .prompt([
+        {
+            type: "input",
+            name: "id",
+            message: "Please input a new Department ID (New ID's start at 10)",
+        },
+        {
+            type: "input",
+            name: "departmentName",
+            message: "What department would you like to add?"
+        },
+
+    ]).then((answer) => {
+        var query = "INSERT INTO department SET ?";
+        connection.query(query, 
+            {
+                id: parseInt(answer.id),
+                name: answer.departmentName,
+            },
+            function(err, res) {
+                if(err) throw err;
+                console.table(res);
+                runSearch();
+            }
+        )
+    })
+};
 
 
 // Add Role
@@ -268,11 +303,6 @@ function addRole(){
         )
     })
 };
-
-// what is role  (prompt)
-// what is salary (prompt)
-// department id (list)
-// runSearch()
 
 // removeRole();
 ///////////////////////////////////////
