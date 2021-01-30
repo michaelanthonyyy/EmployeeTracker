@@ -13,7 +13,7 @@ A business owner wanted to be able to manage their departments, roles, as well a
 
 ![GIF](Assets/images/demo.gif)
 
-[Link to Demo Video]()
+[Link to Demo Video](https://youtu.be/n29QrMWqygw)
 <br>
 <br>
 
