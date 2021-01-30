@@ -37,7 +37,7 @@ function runSearch() {
                 "Remove Department",
                 "Add role",
                 "Remove role",
-                "View department total salary",
+                // "View department total salary",
                 "I'm Done"
             ]
         })
@@ -67,7 +67,7 @@ function runSearch() {
                 case "Add department":
                     addDepartment();
                     break;
-                case "Remove department":
+                case "Remove Department":
                     removeDepartment();
                     break;
                 case "Add role":
@@ -76,9 +76,9 @@ function runSearch() {
                 case "Remove role":
                     removeRole();
                     break;
-                case "View department total salary":
-                    departmentSalary();
-                    break;
+                // case "View department total salary":
+                //     departmentSalary();
+                //     break;
                 case "I'm Done":
                     letsFinish();
                     break;
@@ -99,17 +99,15 @@ function viewAll() {
 
 // View Employees by Department
 function viewAllEmployeesByDepartment() {
+    connection.query("SELECT * FROM department", function (err, res) {
+        if (err) throw err;
+        console.table(res);
+    });
     inquirer
         .prompt({
-            type: "list",
+            type: "input",
             name: "department",
-            message: "Which departments employees would you like to see?",
-            choices: [
-                "Sales",
-                "Engineering",
-                "Finance",
-                "Legal"
-            ]
+            message: "Enter department name to view all employees currently in the department!"
         })
         .then((answer) => {
             var query = "SELECT employee.id, employee.first_name, employee.last_name, role.title, department.name,  employee.manager_id FROM ((employee INNER JOIN role On employee.role_id = role.id) INNER JOIN department ON department.id = role.department_id) WHERE department.name = ?";
@@ -151,6 +149,10 @@ function viewAllEmployeesByManager() {
 
 // Add Employee
 function addEmployee() {
+    connection.query("SELECT * FROM role", function (err, res) {
+        if (err) throw err;
+        console.table(res);
+    });
     inquirer
         .prompt([
             {
@@ -169,24 +171,14 @@ function addEmployee() {
                 message: "What is the employees last name?",
             },
             {
-                type: "list",
+                type: "prompt",
                 name: "roleID",
-                message: "What is the employees role id? (1-Sales Lead, 2-Lead Engineer, 3-Account Manager, 4-Legal Team Lead, 11- Salesperson, 12-Software Engineer, 13-Accountant, 14-Lawyer",
-                choices: [
-                    "1",
-                    "2",
-                    "3",
-                    "4",
-                    "11",
-                    "12",
-                    "13",
-                    "14"
-                ]
+                message: "What is the employees role id?",
             },
             {
                 type: "prompt",
                 name: "managerID",
-                message: "What is the employees manager id? (1-4) "
+                message: "What is the employees manager id?"
             }])
         .then((answer) => {
             var query = "INSERT INTO employee SET ?";
@@ -438,14 +430,31 @@ function removeRole() {
 };
 
 
-
-// departmentSalary();
-///////////////////////////////////////
-// view department total salary
+// Departments total salary
+// function departmentSalary(){
+//     connection.query("SELECT * FROM department", function (err, res) {
+//         if (err) throw err;
+//         console.table(res);
+//     });
+//     inquirer
+//     .prompt([
+//         {
+//             type: "input",
+//             name: "department_id",
+//             message: "Enter the department ID for the departments total utilized budget."
+//         }
+//     ])
+//     .then((answer => {
+//         var query = "SELECT SUM"
+//     }))
+// };
+// "SELECT employee.id, employee.first_name, employee.last_name, role.title, department.name,  employee.manager_id FROM ((employee INNER JOIN role On employee.role_id = role.id) INNER JOIN department ON department.id = role.department_id) WHERE department.name = ?" <= department selector. need salary 
+// Role.salary => role.department_id => department.id =>employee.depa
 // chooose department (list)
 // sumOF salary?
 // console.table results
 // runSearch()
+
 
 // I'm Done prompt so user can exit the application with a fresh print of the employee roster
 function letsFinish() {
